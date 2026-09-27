@@ -12,15 +12,15 @@ Modern, responsive e-commerce frontend for men's clothing. Built as a portfolio 
 
 | Home | Product Details |
 |:---:|:---:|
-| ![Home](docs/screenshots/home.png) | ![Product](docs/screenshots/product-details.png) |
+| ![Home](./public/screenshot/home.jpeg) | ![Product](./public/screenshot/details_screenshot.jpeg) |
 
 | Cart | User Panel |
 |:---:|:---:|
-| ![Cart](docs/screenshots/cart.png) | ![Profile](docs/screenshots/user-info.png) |
+| ![Cart](./public/screenshot/cart_screenshot.jpeg) | ![Profile](./public/screenshot/userinfo_scrennshot.jpeg) |
 
 | Login | Mobile |
 |:---:|:---:|
-| ![Login](docs/screenshots/login.png) | ![Mobile](docs/screenshots/mobile.png) |
+| ![Login](./public/screenshot/login_screenshot.jpeg) | ![Mobile](./public//screenshot/mobile_screenshot.jpeg) |
 
 ---
 
