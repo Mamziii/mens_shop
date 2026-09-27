@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff, AlertCircle, ChevronDown } from "lucide-react";
 import useRegister from "../../Hooks/useRegister";
 import type { RegisterFormData } from "../../types";
+import { API_URL } from "../../config/api";
 
 export default function Register() {
   const [isReadOnly, setIsReadOnly] = useState(true);
@@ -125,7 +126,7 @@ export default function Register() {
                     maxLength: { value: 15, message: "حداکثر ۱۵ کاراکتر" },
                     validate: async (value) => {
                       const res = await fetch(
-                        `http://localhost:4000/users?username=${value}`,
+                        `${API_URL}/users?username=${value}`,
                       );
                       const data = await res.json();
                       if (data.length > 0)
@@ -164,7 +165,7 @@ export default function Register() {
                     },
                     validate: async (value) => {
                       const res = await fetch(
-                        `http://localhost:4000/users?email=${value}`,
+                        `${API_URL}/users?email=${value}`,
                       );
                       const data = await res.json();
                       if (data.length > 0) return "این ایمیل قبلاً گرفته شده";
