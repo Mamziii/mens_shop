@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../Context/useAuth";
+import { API_URL } from "../config/api";
 
 type NewsletterResponse = {
   id: number;
@@ -13,7 +14,7 @@ export default function useNewLetters() {
 
   // ایجاد instance مستقیم axios
   const api = axios.create({
-    baseURL: "http://localhost:4000",
+    baseURL: `${API_URL}`,
   });
 
   return useMutation<NewsletterResponse, Error, string>({

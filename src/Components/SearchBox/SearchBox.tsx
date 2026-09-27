@@ -1,7 +1,7 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
+import { API_URL } from "../../config/api";
 
 type SearchItem = {
   id: number;
@@ -39,7 +39,7 @@ export default function SearchBox({ onClose, isMobile = false }: SearchBoxProps)
     }
 
     try {
-      const res = await fetch("http://localhost:4000/searchBox");
+      const res = await fetch(`${API_URL}/searchBox`);
       const data: SearchItem[] = await res.json();
 
       const filtered = data.filter((item) =>

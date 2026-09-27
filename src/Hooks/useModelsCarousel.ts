@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { API_URL } from "../config/api";
+
 
 export type CarouselItem = {
   id: number;
@@ -9,7 +11,7 @@ export type CarouselItem = {
 };
 
 const fetchModelsCarousel = async (): Promise<CarouselItem[]> => {
-  const res = await axios.get("http://localhost:4000/modelsCarousel");
+  const res = await axios.get(`${API_URL}/modelsCarousel`);
   return res.data;
 };
 

@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "./useAuth";
+import {API_URL} from "../config/api"
 
 type CartContextType = {
   cart: CartItem[];
@@ -18,7 +19,7 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const api = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: API_URL,
   withCredentials: true,
 });
 

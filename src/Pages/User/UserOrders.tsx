@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../Context/useAuth";
 import type { Order } from "../../types";
+import { API_URL } from "../../config/api";
 
 export default function UserOrders() {
   const { user, token } = useAuth();
@@ -26,7 +27,7 @@ export default function UserOrders() {
 
     setLoading(true);
     axios
-      .get(`http://localhost:4000/orders?userID=${user.id}`, {
+      .get(`${API_URL}/orders?userID=${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -45,7 +46,7 @@ export default function UserOrders() {
   return (
     <div className="min-h-screen bg-background-light pb-16">
       <div className="container mx-auto px-4 max-w-4xl py-10">
-        {/* هدر */}
+      
         <div className="flex items-center gap-3 mb-8">
           <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
             <Package size={22} className="text-primary" />
@@ -60,7 +61,7 @@ export default function UserOrders() {
           </div>
         </div>
 
-        {/* محتوا */}
+        
         {loading ? (
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
@@ -117,7 +118,7 @@ export default function UserOrders() {
                     </div>
                   </div>
 
-                  {/* اقلام */}
+                  
                   <div className="p-5">
                     <p className="text-sm font-medium text-text-main mb-3">
                       اقلام سفارش
@@ -157,7 +158,7 @@ export default function UserOrders() {
                       ))}
                     </ul>
 
-                    {/* آدرس و تلفن */}
+                    
                     <div className="mt-5 pt-4 border-t border-border space-y-2 text-sm">
                       <div className="flex items-start gap-2 text-text-secondary">
                         <MapPin size={15} className="text-primary mt-0.5 shrink-0" />

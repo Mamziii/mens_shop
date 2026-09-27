@@ -1,4 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { API_URL } from "../config/api";
+
 
 function useInfiniteDiscountProducts() {
   return useInfiniteQuery({
@@ -6,7 +8,7 @@ function useInfiniteDiscountProducts() {
 
     queryFn: async ({ pageParam = 1 }) => {
       const res = await fetch(
-        `http://localhost:4000/products?_limit=4&_page=${pageParam}&discount_gte=1`
+        `${API_URL}/products?_limit=4&_page=${pageParam}&discount_gte=1`
       );
 
       return res.json();

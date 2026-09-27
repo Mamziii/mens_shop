@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/useAuth";
 import type { LoginFormData } from "../types";
+import { API_URL } from "../config/api";
 
 export default function useLogin() {
   const auth = useAuth();
@@ -10,7 +11,7 @@ export default function useLogin() {
 
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
-      const res = await axios.post("http://localhost:4000/login", {
+      const res = await axios.post(`${API_URL}/login`, {
         email: data.email,
         password: data.password,
       });

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "../Context/useAuth";
 import type { User, UserUpDateFormData } from "../types";
+import { API_URL } from "../config/api";
 
 export const useUsers = () => {
   const { token, login } = useAuth();
@@ -9,7 +10,7 @@ export const useUsers = () => {
 
   //  Get User 
   const fetchUsers = async (): Promise<User[]> => {
-    const res = await axios.get("http://localhost:4000/users", {
+    const res = await axios.get(`${API_URL}/users`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
@@ -29,7 +30,7 @@ export const useUsers = () => {
   // Delete User
   const deleteUser = useMutation({
     mutationFn: (userId: number) =>
-      axios.delete(`http://localhost:4000/users/${userId}`, {
+      axios.delete(`${API_URL}/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
     onSuccess: () => {
@@ -46,7 +47,7 @@ export const useUsers = () => {
       userId: number;
       data: UserUpDateFormData;
     }) =>
-      axios.patch(`http://localhost:4000/users/${userId}`, data, {
+      axios.patch(`${API_URL}/users/${userId}`, data, {
         headers: { Authorization: `Bearer ${token}` },
       }),
     onSuccess: (res) => {
