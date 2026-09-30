@@ -1,4 +1,4 @@
-import {  useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useModelsCarousel } from "../../Hooks/useModelsCarousel";
@@ -8,17 +8,11 @@ export default function ModelsCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // برای درگ با موس
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeftStart = useRef(0);
-
   const scrollByAmount = (direction: "next" | "prev") => {
     const el = containerRef.current;
     if (!el) return;
 
-    // در RTL اسکرول معکوس است؛ با علامت منفی هماهنگ می‌شود
-    const amount = 176; // عرض تقریبی هر آیتم + gap
+    const amount = 176;
     el.scrollBy({
       left: direction === "next" ? -amount : amount,
       behavior: "smooth",
@@ -28,7 +22,6 @@ export default function ModelsCarousel() {
   const next = () => scrollByAmount("next");
   const prev = () => scrollByAmount("prev");
 
-  // autoplay
   const startAutoPlay = () => {
     if (items.length <= 6) return;
     stopAutoPlay();
@@ -49,56 +42,6 @@ export default function ModelsCarousel() {
     return stopAutoPlay;
   }, [items.length]);
 
-  // ---- درگ با موس ----
-  const handleMouseDown = (e: React.MouseEvent) => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    isDragging.current = true;
-    startX.current = e.pageX - el.offsetLeft;
-    scrollLeftStart.current = el.scrollLeft;
-    el.style.cursor = "grabbing";
-    el.style.userSelect = "none";
-    stopAutoPlay();
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    const el = containerRef.current;
-    if (!el) return;
-
-    e.preventDefault();
-    const x = e.pageX - el.offsetLeft;
-    const walk = x - startX.current;
-    el.scrollLeft = scrollLeftStart.current - walk;
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-    const el = containerRef.current;
-    if (el) {
-      el.style.cursor = "grab";
-      el.style.userSelect = "";
-    }
-    startAutoPlay();
-  };
-
-  const handleMouseLeave = () => {
-    if (isDragging.current) {
-      isDragging.current = false;
-      const el = containerRef.current;
-      if (el) {
-        el.style.cursor = "grab";
-        el.style.userSelect = "";
-      }
-    }
-    startAutoPlay();
-  };
-
-  // لمس موبایل: با overflow-x-auto خودش کار می‌کند
-  const handleTouchStart = () => stopAutoPlay();
-  const handleTouchEnd = () => startAutoPlay();
-
   if (isLoading) {
     return (
       <div className="flex gap-4 overflow-hidden px-2">
@@ -113,7 +56,11 @@ export default function ModelsCarousel() {
   }
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={stopAutoPlay}
+      onMouseLeave={startAutoPlay}
+    >
       {/* prev */}
       <button
         type="button"
@@ -136,37 +83,23 @@ export default function ModelsCarousel() {
 
       <div
         ref={containerRef}
-        className="flex gap-4 overflow-x-auto px-4 sm:px-12 scroll-smooth cursor-grab
-                   scrollbar-hide touch-pan-x"
+        className="flex gap-4 overflow-x-auto px-4 sm:px-12 scroll-smooth
+                   touch-pan-x"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
         }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        onTouchStart={stopAutoPlay}
+        onTouchEnd={startAutoPlay}
       >
         {items.map((item) => (
-          <Link
-            key={item.id}
-            to={item.route}
-            className="group shrink-0 w-40"
-            draggable={false}
-            onClick={(e) => {
-              // اگر درگ کرده بود، لینک باز نشود
-              if (isDragging.current) e.preventDefault();
-            }}
-          >
-            <div className="relative aspect-3/4 rounded-2xl overflow-hidden bg-background-light border border-border pointer-events-none sm:pointer-events-auto">
+          <Link key={item.id} to={item.route} className="group shrink-0 w-40">
+            <div className="relative aspect-3/4 rounded-2xl overflow-hidden bg-background-light border border-border">
               <img
                 src={item.image}
                 alt={item.title}
-                draggable={false}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 pointer-events-none"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/65 via-transparent to-transparent" />
               <div className="absolute bottom-0 right-0 left-0 p-3">
