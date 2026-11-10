@@ -15,7 +15,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
     const el = containerRef.current;
     if (!el) return;
 
-    // موبایل کارت کوچک‌تر، دسکتاپ بزرگ‌تر
+    // mobile and desktop size
     const amount = window.innerWidth < 640 ? 160 : 280;
     el.scrollBy({
       left: direction === "next" ? -amount : amount,
@@ -61,7 +61,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
         onMouseEnter={stopAutoPlay}
         onMouseLeave={startAutoPlay}
       >
-        {/* prev - فقط دسکتاپ */}
+        {/* prev / desktop */}
         {products.length > 2 && (
           <button
             type="button"
@@ -73,7 +73,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
           </button>
         )}
 
-        {/* next - فقط دسکتاپ */}
+        {/* next / desktop */}
         {products.length > 2 && (
           <button
             type="button"
@@ -85,7 +85,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
           </button>
         )}
 
-        {/* لیست — موبایل: انگشت / دسکتاپ: دکمه */}
+        {/* mobile size */}
         <div
           ref={containerRef}
           className="flex gap-3 sm:gap-5 overflow-x-auto px-1 sm:px-12 scroll-smooth touch-pan-x"
