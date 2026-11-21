@@ -1,25 +1,33 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import type { User } from "../types";
 
 type AuthContextType = {
-  user: any;
+  user: User | null;
   token: string | null;
-  login: (token: string, user: any) => void;
+  login: (token: string, user: User) => void;
   logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) return null;
+      return JSON.parse(storedUser) as User;
+    } catch {
+      // اگر دادهٔ خراب در localStorage بود، پاکش می‌کنیم
+      localStorage.removeItem("user");
+      return null;
+    }
   });
 
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("token");
   });
 
-  const login = (token: string, user: any) => {
+  const login = (token: string, user: User) => {
     setUser(user);
     setToken(token);
     localStorage.setItem("user", JSON.stringify(user));
@@ -42,7 +50,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
   return context;
 };

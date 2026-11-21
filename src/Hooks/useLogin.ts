@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/useAuth";
-import type { LoginFormData } from "../types";
+import type { LoginFormData, LoginResponse } from "../types";
 import { API_URL } from "../config/api";
 
 export default function useLogin() {
@@ -10,8 +10,8 @@ export default function useLogin() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: async (data: LoginFormData) => {
-      const res = await axios.post(`${API_URL}/login`, {
+    mutationFn: async (data: LoginFormData): Promise<LoginResponse> => {
+      const res = await axios.post<LoginResponse>(`${API_URL}/login`, {
         email: data.email,
         password: data.password,
       });
@@ -20,13 +20,19 @@ export default function useLogin() {
     },
     onSuccess: (data) => {
       const { accessToken, user } = data;
-
       auth.login(accessToken, user);
       navigate("/");
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       alert("ورود ناموفق!!!!");
-      console.log(err.res?.data || err.message);
+
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data || err.message);
+      } else if (err instanceof Error) {
+        console.log(err.message);
+      } else {
+        console.log(err);
+      }
     },
   });
 

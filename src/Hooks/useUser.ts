@@ -8,9 +8,9 @@ export const useUsers = () => {
   const { token, login } = useAuth();
   const queryClient = useQueryClient();
 
-  //  Get User 
+  // Get Users
   const fetchUsers = async (): Promise<User[]> => {
-    const res = await axios.get(`${API_URL}/users`, {
+    const res = await axios.get<User[]>(`${API_URL}/users`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
@@ -38,23 +38,31 @@ export const useUsers = () => {
     },
   });
 
-  //Update User
+  // Update User
   const updateUser = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       userId,
       data,
     }: {
       userId: number;
       data: UserUpDateFormData;
-    }) =>
-      axios.patch(`${API_URL}/users/${userId}`, data, {
-        headers: { Authorization: `Bearer ${token}` },
-      }),
-    onSuccess: (res) => {
+    }): Promise<User> => {
+      const res = await axios.patch<User>(
+        `${API_URL}/users/${userId}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    },
+    onSuccess: (updatedUser) => {
       // کاربر به‌روزرسانی شد، کش را تازه می‌کنیم
       queryClient.invalidateQueries({ queryKey: ["usersList"] });
       // آپدیت کردن اطلاعات کاربر لاگین شده
-      login(token!, res.data);
+      if (token) {
+        login(token, updatedUser);
+      }
     },
   });
 

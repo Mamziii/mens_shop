@@ -37,6 +37,7 @@ export interface User {
   username: string;
   email: string;
   gender: "male" | "female";
+  role?: "user" | "admin";
 }
 
 export type UserUpDateFormData = {
@@ -72,6 +73,16 @@ export interface Order {
   address: string;
   phone: string;
   date: Date;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  user: User;
+}
+
+export interface RegisterResponse {
+  accessToken: string;
+  user: User;
 }
 
 export type SortType = "default" | "asc" | "desc";

@@ -1,16 +1,15 @@
+import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import type { RegisterFormData } from "../types";
+import type { RegisterFormData, RegisterResponse } from "../types";
 import { API_URL } from "../config/api";
-
 
 export default function useRegister() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: async (data: RegisterFormData) => {
-      const res = await axios.post(`${API_URL}/register`, {
+    mutationFn: async (data: RegisterFormData): Promise<RegisterResponse> => {
+      const res = await axios.post<RegisterResponse>(`${API_URL}/register`, {
         firstName: data.firstName,
         lastName: data.lastName,
         username: data.username,
@@ -27,9 +26,16 @@ export default function useRegister() {
       navigate("/login");
     },
 
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       alert("ثبت نام ناموفق بود !!!!!");
-      console.log(err.res?.data || err.message);
+
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data || err.message);
+      } else if (err instanceof Error) {
+        console.log(err.message);
+      } else {
+        console.log(err);
+      }
     },
   });
 
