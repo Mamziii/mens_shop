@@ -7,11 +7,12 @@ import { AuthProvider } from "./Context/useAuth.tsx";
 import { CartProvider } from "./Context/CartContext.tsx";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop.tsx";
+import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary.tsx";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <>
+  <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ScrollToTop />
@@ -23,5 +24,5 @@ createRoot(document.getElementById("root")!).render(
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  </>,
+  </ErrorBoundary>
 );

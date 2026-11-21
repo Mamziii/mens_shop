@@ -5,6 +5,7 @@ import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import Cart from "./Pages/Cart/Cart";
 import DiscountProducts from "./Pages/DiscountProducts/DiscountProducts";
 import NewProducts from "./Pages/NewProducts/NewProducts";
+import NotFound from "./Pages/NotFound/NotFound";
 // clothes
 import Shirts from "./Pages/Clothes/Shirts";
 import Hoodies from "./Pages/Clothes/Hoodies";
@@ -68,9 +69,7 @@ const routes = [
   // user
   { path: "/سفارشات من", element: <UserOrders /> },
   { path: "/داشبورد", element: <UserInfos /> },
-
-
-
+  { path: "*", element: <NotFound /> },
 ];
 
 export default routes;
